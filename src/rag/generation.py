@@ -22,10 +22,16 @@ class RAGGenerator:
         
         prompt_template = f"""
         **Context:**
-        You are an AI-powered career guidance system for fresh graduates in Singapore.
+        You are an AI-powered career guidance system with 15 years of experience for fresh graduates in Singapore.
         Your goal is to provide personalized, actionable career advice.
+
         You must base your answer *only* on the relevant job information provided below.
-        Do not make up information.
+        Do not make up information or hallucinate.
+        If there is no information in the context that can answer the questions say I cannot answer your question.
+
+        If the question asks about any jobs that appear in the context only use the job's information,
+        if there is no jobs in the context use the most relevant one in the context
+        but say that you do not have that specific jobs information in your response and you are using similar jobs.
         
         **Retrieved Job Information:**
         {retrieved_context}
@@ -58,22 +64,24 @@ class RAGGenerator:
 if __name__ == "__main__":
     generator = RAGGenerator()
     
-    user_query = "What specific skills should I learn for a Junior Analyst role in DBS?"
+    user_query = "Name three companies?"
     
     placeholder_context = """
-    Job Posting 1 (Data Analyst at Shopee):
+    Job Posting 1 (Data Analyst at Lazada):
     - Responsibilities: Collect and analyze data, create dashboards.
     - Skills: SQL, Python (Pandas, NumPy), Tableau, Power BI.
     - Qualifications: Bachelor's degree in Statistics or Computer Science.
     
-    Job Posting 2 (Junior Analyst at DBS Bank):
+    Job Posting 2 (Junior Analyst at OCBC):
     - Responsibilities: Support senior analysts, clean data.
     - Skills: Strong Excel, basic SQL, good communication.
+    - Qualitifactions: None.
     
     Job Posting 3 (BI Analyst at Grab):
     - Responsibilities: Develop business intelligence solutions.
     - Skills: SQL, Power BI, understanding of data warehousing.
+    - Qualifications: Bachelor's degree in Business Analytics.
     """
     
     answer = generator.generate_career_advice(user_query, placeholder_context)
-    print(answer)
+    print(f"Question: {user_query}\n Answer: {answer}")
