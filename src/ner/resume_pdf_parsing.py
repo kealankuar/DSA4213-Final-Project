@@ -12,7 +12,6 @@ RESUMES_DIR = Path(r"../../data/resumes/banking")
 
 # Output file names
 PARSED_CSV_FILE = "../../data/ner/parsed_resumes_dataframe.csv"
-DOCANNO_JSONL_FILE = "../../data/ner/resume_test_data.jsonl"
 # ---------------------
 
 # --------------------------------------------------------
@@ -60,7 +59,7 @@ def prepare_data_for_annotation(data: List[Dict[str, Any]], output_jsonl_path: P
                 }
                 f.write(json.dumps(document, ensure_ascii=False) + '\n')
 
-    print(f"✅ Universal JSONL data saved to: {output_jsonl_path.name}")
+    print(f"✅ Universal JSONL data saved to: {output_jsonl_path}")
 
 
 # --------------------------------------------------------
@@ -110,8 +109,8 @@ if __name__ == "__main__":
         df.to_csv(PARSED_CSV_FILE, index=False)
         
         print("\n" + "="*70)
-        print(f"✅ CONVERSION COMPLETE: Minimal CSV saved to: {PARSED_CSV_FILE.name}")
+        print(f"✅ CONVERSION COMPLETE: Minimal CSV saved to: {PARSED_CSV_FILE}")
         
         # --- Task 4: Prepare Data for Annotation ---
-        prepare_data_for_annotation(all_resumes_data, UNIVERSAL_JSONL_FILE)
+        prepare_data_for_annotation(all_resumes_data, DOCANNO_JSONL_FILE)
         print("="*70)

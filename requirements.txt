@@ -1,0 +1,14 @@
+datasets==4.2.0
+evaluate==0.4.6
+neural_compressor==3.6
+numpy==2.3.4
+optimum==2.0.0
+optimum_intel==1.26.0
+optimum_onnx==0.0.3
+pandas==2.3.3
+pdfminer==20191125
+pdfminer_six==20250506
+safetensors==0.6.2
+torch==2.2.2
+tqdm==4.67.1
+transformers==4.55.4
