@@ -1,29 +1,38 @@
-# DSA4213-Final-Project : An NLP-Powered Job Matching System
+# DSA4213-Final-Project : Job-Seek – Resume Intelligence & Career Insights
 
 
 ## 📌 Overview
-This project develops an **AI-powered career guidance system** to support fresh graduates in navigating Singapore’s competitive job market.  
-The system leverages **Natural Language Processing (NLP)** techniques such as **Named Entity Recognition (NER)**, **semantic search**, and **Retrieval-Augmented Generation (RAG)** to:
+This repository contains the full pipeline for the **Job-Seek System**, an end-to-end platform designed to help users understand their resumes, identify missing skills, and query relevant job insights.
+The system consists of three core modules:
 
-- Match graduates’ skills with job postings.  
-- Identify skill gaps and recommend relevant upskilling opportunities.  
-- Provide **personalized, actionable career advice**.
+- Named Entity Recognition (NER) → Extracts skills, qualifications, job titles, and tools
+- Retrieval-Augmented Generation (RAG) → Answers user queries about job fit
+- Frontend UI → User-facing interface for uploading resumes and interacting with the system
 
 ---
-## ✨ Features
-- **NER Model (Fine-Tuned BERT)**  
-  Extracts structured entities such as skills, qualifications, and tools from resumes and job postings.  
+## 🧠 Named Entity Recognition (NER)
 
-- **Hybrid Retrieval System**  
-  Combines semantic search (dense embeddings via sentence-transformers) with keyword-based sparse retrieval for robust performance.  
+The NER module is responsible for extracting structured information such as skills, job titles, qualifications, organisations, and tools from resumes and job descriptions. The training script loads a token-label CSV file, prepares it into HuggingFace Dataset format, aligns labels to subword tokens, and runs an ablation study across multiple transformer models and learning rates. Each model is evaluated using SeqEval, and both the trained model weights and tokenizer are saved for downstream inference. A summary CSV is also generated for quick comparison.
 
-- **Retrieval-Augmented Generation (RAG)**  
-  Uses an instruction-tuned LLM (Flan-T5) to generate contextualized career advice in natural language.  
-
-- **Evaluation Pipeline**  
-  - NER: Precision, Recall, F1  
-  - Retrieval: Precision@K, Mean Reciprocal Rank (MRR)  
-  - System: Human evaluation on faithfulness, relevance, and helpfulness  
+---
+## 📦 Installation
+Install the required dependencies for the project:
+```bash
+pip install -r requirements.txt
+```
+---
+## 🚀 Running NER Training
+To train all NER models:
+```bash
+python train_ner.py
+```
+Running this will:
+- preprocess the dataset
+- train all model × learning rate combinations
+- evaluate using precision, recall, F1, and accuracy
+- save each trained model under ```models/ner_ablation_results/<model>_<lr>/``` 
+- generate ablation_summary.csv with all results
+---
 
 ---
 ## 📂 Repository Structure
@@ -31,10 +40,6 @@ The system leverages **Natural Language Processing (NLP)** techniques such as **
 DSA4213-Final-Project/
 │
 ├── data/                # Sample/anonymized job postings & resumes
-├── notebooks/           # Jupyter notebooks for experiments
-│   ├── 01-data-collection.ipynb
-│   ├── 02-ner-training.ipynb
-│   └── 03-rag-pipeline.ipynb
 │
 ├── src/                 # Core source code
 │   ├── ner/             # Entity extraction modules
