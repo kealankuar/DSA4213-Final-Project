@@ -9,6 +9,15 @@ The system consists of three core modules:
 - Retrieval-Augmented Generation (RAG) → Answers user queries about job fit
 - Frontend UI → User-facing interface for uploading resumes and interacting with the system
 ---
+## Getting Started
+
+### Clone the Repository
+```bash
+git clone https://github.com/yourusername/DSA4213-Final-Project.git
+cd DSA4213-Final-Project
+```
+
+---
 ## Installation
 Install the required dependencies for the project:
 ```bash
