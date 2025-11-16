@@ -84,13 +84,14 @@ DSA4213-Final-Project/
 │   ├── rag/             # RAG integration with Flan-T5
 │   └── utils/           # Helper functions
 │
-├── tests/               # Unit tests
-├── results/             # Evaluation reports, ablation studies
+├── results/             # Evaluation report
 |
-├── app/                   # Web application 
-│   ├── app.py
-│   ├── components/        # UI components
-│   └── static/            # Images, logos, styles
+├── frontend/            # Web application 
+│   ├── index.html
+│   ├── script.js        
+│   └── style.css         
+│
+├── app.py               #  
 │
 ├── requirements.txt     # Dependencies
 ├── README.md            # Project overview
