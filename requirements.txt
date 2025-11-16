@@ -18,7 +18,7 @@ optimum_onnx==0.0.3
 
 # Data Processing
 pandas==2.3.3
-numpy==2.3.4
+numpy<2.0,>=1.24.0
 
 # Databases
 neo4j>=5.0.0
@@ -30,4 +30,5 @@ pdfminer_six==20250506
 
 # Utilities
 tqdm==4.67.1
+
 
