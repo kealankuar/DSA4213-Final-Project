@@ -1,14 +1,33 @@
+# Web Framework
+flask==3.0.0
+flask-cors==4.0.0
+
+# Machine Learning & NLP
+torch==2.2.2
+transformers==4.55.4
+sentence-transformers>=2.2.0
 datasets==4.2.0
 evaluate==0.4.6
+safetensors==0.6.2
+
+# Optimization & Compression
 neural_compressor==3.6
-numpy==2.3.4
 optimum==2.0.0
 optimum_intel==1.26.0
 optimum_onnx==0.0.3
+
+# Data Processing
 pandas==2.3.3
+numpy==2.3.4
+
+# Databases
+neo4j>=5.0.0
+pymongo>=4.5.0
+
+# PDF Processing
 pdfminer==20191125
 pdfminer_six==20250506
-safetensors==0.6.2
-torch==2.2.2
+
+# Utilities
 tqdm==4.67.1
-transformers==4.55.4
+
