@@ -13,7 +13,7 @@ The system consists of three core modules:
 
 ### Clone the Repository
 ```bash
-git clone https://github.com/yourusername/DSA4213-Final-Project.git
+git clone https://github.com/kealankuar/DSA4213-Final-Project.git
 cd DSA4213-Final-Project
 ```
 
