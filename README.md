@@ -30,6 +30,8 @@ Update your Neo4j credentials in the relevant scripts or create a configuration 
 - Username: Your database username
 - Password: Your database password
 
+**⚠️ Note:** The Neo4j database may become inactive after periods of inactivity. If you encounter connection errors, the database may need to be reactivated. Please allow a few moments for the database to resume before retrying your query.
+
 ---
 ##  Named Entity Recognition (NER)
 
