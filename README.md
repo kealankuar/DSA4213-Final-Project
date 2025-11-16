@@ -85,7 +85,7 @@ DSA4213-Final-Project/
 │   └── utils/           # Helper functions
 │
 ├── results/             # Evaluation report
-|
+│
 ├── frontend/            # Web application 
 │   ├── index.html
 │   ├── script.js        
