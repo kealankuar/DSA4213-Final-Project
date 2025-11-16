@@ -9,11 +9,27 @@ The system consists of three core modules:
 - Retrieval-Augmented Generation (RAG) → Answers user queries about job fit
 - Frontend UI → User-facing interface for uploading resumes and interacting with the system
 ---
+## Getting Started
+
+### Clone the Repository
+```bash
+git clone https://github.com/yourusername/DSA4213-Final-Project.git
+cd DSA4213-Final-Project
+```
+
+---
 ## Installation
 Install the required dependencies for the project:
 ```bash
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
+
+### Configure Neo4j Database
+Update your Neo4j credentials in the relevant scripts or create a configuration file with (currently configured to use our Neo4j database):
+- URI: Your Neo4j connection string
+- Username: Your database username
+- Password: Your database password
+
 ---
 ##  Named Entity Recognition (NER)
 
@@ -36,66 +52,138 @@ Running this will:
 
 The RAG module takes the entities and text extracted by the NER component and uses them to answer user questions about resumes and job descriptions. It is designed to let users ask things like “What skills am I missing for this role?” or “Does my experience match this job?” by retrieving relevant chunks from indexed job postings or knowledge sources and passing them to a language model for response generation.
 
-## Run RAG 
+## Generating Graph Nodes
+
+Before running the RAG system, you need to populate the Neo4j graph database with resumes, job postings and course data. This creates the knowledge graph used for recommendations.
+
+### Prerequisites
+- Neo4j database running and accessible
+- Course data in `data/courses/course_data.jsonl`
+- Resume NER + embedding data in `data/embeddings/resume_embeddings.jsonl`
+- Job NER + embedding data in `data/embeddings/job_embeddings.jsonl`
+
+### Run Graph Generation
 ```bash
 cd src/rag
-python FILL THIS UP
+python generate_graph_nodes.py
 ```
+
+This will:
+- Connect to your Neo4j database
+- Create Resume, Job and Course nodes with their properties
+- Generate embeddings for each node
+- Create skill, tool, org and domain relationships
+- Build the graph structure for retrieval
+
 ---
 
-## Frontend Web Application
+## 📊 Evaluation
 
-The frontend provides the user interface for the Job-Seek system. It allows users to upload their resumes, view extracted entities from the NER module, and interact with the RAG backend by asking questions about job fit, missing skills, and role requirements. The frontend communicates with the backend APIs exposed by the NER and RAG modules.
+The evaluation module assesses the quality of the RAG system's generated responses. It processes multiple test queries with their corresponding resumes and generates answers, which can then be analyzed for relevance, accuracy, and helpfulness.
 
-## Install Frontend Dependencies
-
+### Running Evaluation
 ```bash
-cd frontend
-npm install
-# or
-yarn install
+cd src/rag
+python evaluation.py
 ```
-## Run Frontend 
+
+This will:
+- Load test queries from `input_data/evaluation/collated_evaluation_path.jsonl`
+- Process each query-resume pair through the full RAG pipeline
+- Generate answers using the LLM
+- Save results to `results/evaluation_results_<timestamp>.csv`
+- Include query, generated answer, context used
+
+### Evaluation Metrics
+The evaluation results can be analyzed for:
+- Response relevance to the user query
+- Quality of job and course recommendations
+- Response coherence and helpfulness
+
+---
+
+## 🚀 Running the Application
+
+### 1. Start the Backend Server
 ```bash
-cd frontend
-npm run dev
-# or (pls fill this up)
-yarn dev
+cd src/backend
+python app.py
 ```
+The Flask backend will start on `http://localhost:5000`
+
+### 2. Start the Frontend Server
+```bash
+cd src/frontend
+python -m http.server 8080
+```
+Open your browser and navigate to `http://localhost:8080/index.html`
+
+### 3. Using the Application
+1. Upload your resume (PDF format)
+2. Enter a query (e.g., "What skills am I missing for finance roles?")
+3. Click "Analyze Resume"
+4. Wait for the AI to generate personalized career advice (~60-120 seconds)
+5. View your results with job matches, missing skills, and course recommendations
+
+---
 
 ### Example Use case
-1. Upload your resume.  
+1. Upload your resume (PDF format)
 2. Enter a query:  "What roles in finance fit my background?"
 3. The app will:
-  - Match your skills with relevant job postings  
-  - Highlight missing skills or gaps  
-  - Suggest relevant upskilling courses  
+  - Extract skills, tools, and qualifications from your resume using NER
+  - Match your profile with relevant job postings from the Neo4j knowledge graph
+  - Highlight missing skills or gaps for your target roles
+  - Suggest relevant upskilling courses to bridge the gaps
+  - Generate personalized career advice using AI
 
 ---
 ## 📂 Repository Structure
 ```bash
 DSA4213-Final-Project/
 │
-├── data/                # Synthetic and Kaggle job postings & resumes
+├── data/                          # Training and source data
+│   ├── courses/                   # Course data for recommendations
+│   ├── embeddings/                # Pre-computed embeddings
+│   ├── ner/                       # NER training datasets
+│   └── resumes/                   # Sample resume PDFs
 │
-├── src/                 # Core source code
-│   ├── ner/             # Entity extraction modules
-│   ├── retrieval/       # Hybrid retrieval modules
-│   ├── rag/             # RAG integration with Flan-T5
-│   └── utils/           # Helper functions
+├── src/                           # Core source code
+│   ├── backend/                   # Flask API server
+│   │   └── app.py                 # Main backend application
+│   ├── frontend/                  # Web UI
+│   │   ├── index.html
+│   │   ├── script.js        
+│   │   └── style.css         
+│   ├── ner/                       # Named Entity Recognition
+│   │   ├── train_ner.py           # NER model training
+│   │   ├── run_inference_fx.py    # NER inference functions
+│   │   └── resume_pdf_parsing.py  # PDF text extraction
+│   └── rag/                       # Retrieval-Augmented Generation
+│       ├── answer_generation.py   # Main RAG pipeline
+│       ├── context_generation.py  # Context retrieval
+│       ├── evaluation.py          # RAG system evaluation
+│       ├── generate_embeddings.py # Generate embeddings for entities
+│       ├── generate_graph_nodes.py # Populate Neo4j database
+│       ├── generation.py          # LLM text generation
+│       ├── graph_retrieval.py     # Neo4j graph queries
+│       ├── input_processing.py    # Process user inputs
+│       └── retrieval_functions.py # Retrieval utility functions
 │
-├── results/             # Evaluation report
+├── input_data/                    # User-uploaded data
+│   ├── evaluation/                # Evaluation test cases
+│   │   └── collated_evaluation_path.jsonl  # Test query-resume pairs
+│   ├── queries/                   # User query history
+│   └── resumes/                   # Uploaded resume PDFs
+|    
 │
-├── frontend/            # Web application 
-│   ├── index.html
-│   ├── script.js        
-│   └── style.css         
+├── results/                       # NER and evaluation results
+│   ├── evaluation_results_*.csv   # RAG evaluation outputs
+│   └── *.csv                      # NER inference results
 │
-├── app.py               #  
-│
-├── requirements.txt     # Dependencies
-├── README.md            # Project overview
-└── .gitignore           # Ignore cache/large files
+├── requirements.txt               # Python dependencies
+├── README.md                      # Project documentation
+└── .gitignore                     # Git ignore rules
 ```
 
 ## 👥 Contributors
