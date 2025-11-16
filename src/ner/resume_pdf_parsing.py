@@ -8,10 +8,11 @@ from typing import Dict, List, Any, Optional
 
 # --- CONFIGURATION ---
 # Define the directory path where all your resume PDFs are located
-RESUMES_DIR = Path(r"../../data/resumes/banking")
+RESUMES_DIR = Path("../../data/resumes/banking").resolve()
 
 # Output file names
 PARSED_CSV_FILE = "../../data/ner/parsed_resumes_dataframe.csv"
+DOCANNO_JSONL_FILE = "../../data/ner/resume_test_data.jsonl"
 # ---------------------
 
 # --------------------------------------------------------
@@ -59,21 +60,18 @@ def prepare_data_for_annotation(data: List[Dict[str, Any]], output_jsonl_path: P
                 }
                 f.write(json.dumps(document, ensure_ascii=False) + '\n')
 
-    print(f"✅ Universal JSONL data saved to: {output_jsonl_path}")
+    print(f"✅ Universal JSONL data saved to: {output_jsonl_path.name}")
 
-
-# --------------------------------------------------------
-# MAIN EXECUTION
-# --------------------------------------------------------
-if __name__ == "__main__":
-    
+# Processes PDF resumes to structured CSV + JSONL for annotation
+def pdf_processing_pipeline(RESUMES_DIR, output_csv_path, output_jsonl_path):
     if not RESUMES_DIR.is_dir():
         print(f"❌ Error: Directory not found at {RESUMES_DIR}")
         sys.exit(1)
             
     all_resumes_data: List[Dict[str, Any]] = []
     pdf_files = list(RESUMES_DIR.glob("*.pdf"))
-    
+    print(f"Searching for PDF files in: {RESUMES_DIR}")
+
     print("\n" + "="*70)
     print(f"STARTING BATCH CONVERSION: {RESUMES_DIR.name} (Found {len(pdf_files)} PDFs)")
     print("="*70)
@@ -105,12 +103,21 @@ if __name__ == "__main__":
         
         # Define columns for the CSV output (Only File_Name and Full_Text)
         cols = ['File_Name', 'Full_Text']
+
         df = df.reindex(columns=cols) # Use .reindex to ensure only the desired columns exist
-        df.to_csv(PARSED_CSV_FILE, index=False)
+        df.to_csv(output_csv_path, index=False)
         
         print("\n" + "="*70)
         print(f"✅ CONVERSION COMPLETE: Minimal CSV saved to: {PARSED_CSV_FILE}")
         
-        # --- Task 4: Prepare Data for Annotation ---
-        prepare_data_for_annotation(all_resumes_data, DOCANNO_JSONL_FILE)
+        # --- Task 4: Prepare Data for Annotation: Outputs JSONL ---
+        prepare_data_for_annotation(all_resumes_data, output_jsonl_path)
         print("="*70)
+
+# --------------------------------------------------------
+# MAIN EXECUTION
+# --------------------------------------------------------
+
+
+if __name__ == "__main__":
+    pdf_processing_pipeline(RESUMES_DIR, Path(PARSED_CSV_FILE), Path(DOCANNO_JSONL_FILE))
