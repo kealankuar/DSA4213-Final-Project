@@ -1,0 +1,21 @@
+[
+  {
+    "text": "How well does my current profile fit typical junior relationship manager or client advisor roles? Give me a rating from 1 to 5 and explain my main strengths and weaknesses based on my resume.",
+    "extracted_entities": {
+      "SKILL": [
+        {
+          "word": "Junior",
+          "score": 0.8647777438163757
+        },
+        {
+          "word": "Manager",
+          "score": 0.9153088331222534
+        },
+        {
+          "word": "Client Advisor",
+          "score": 0.783263087272644
+        }
+      ]
+    }
+  }
+]

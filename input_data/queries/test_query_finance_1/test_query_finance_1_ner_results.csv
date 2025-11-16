@@ -1,0 +1,2 @@
+text,extracted_entities
+"Based on my resume, what key skills or qualifications am I missing for typical junior relationship manager or client advisor roles in a bank?","{'SKILL': [{'word': 'Junior Relationship Manager', 'score': 0.7741485238075256}, {'word': 'Client Advisor', 'score': 0.8968371152877808}]}"
